@@ -1,0 +1,92 @@
+================================================================================
+REFLECTIVE REPORT
+Healthcare Management System Implementation
+
+Student: Shubhamkumar Prahladbhai Patel
+Module: Software Architecture
+
+================================================================================
+
+INTRODUCTION
+
+This report reflects on the implementation of the Healthcare Management System,
+demonstrating how the designs from Part 1 (use case diagram, class diagram, and
+three-tier architecture) have been realized in a working Java application using
+the Model-View-Controller (MVC) pattern.
+
+REALIZATION OF PART 1 DESIGNS IN IMPLEMENTATION
+
+The class diagram from Part 1 provided the blueprint for all model classes. The
+abstract User class serves as the parent for Patient, with concrete clinician
+types (GP, Specialist, Nurse) extending the abstract Clinician class, exactly
+as designed. The inheritance hierarchy has been preserved, with appropriate
+method implementations in each subclass. For instance, the createRecord()
+abstract method in Clinician is implemented differently in GP, Specialist, and
+Nurse classes, reflecting their distinct roles in clinical documentation.
+
+The aggregation relationships identified in Part 1, particularly between Patient
+and Appointment, and Patient and ClinicalRecord, have been implemented using
+ArrayList collections. This allows patients to maintain their own lists of
+appointments and clinical records, enabling efficient data management. The
+Prescription and Referral classes include all attributes specified in the class
+diagram, with appropriate getter/setter methods and business logic methods such
+as validate() for Prescription and sendReferral() for Referral.
+
+The use case diagram influenced the implementation of user interactions. Each
+use case (book appointment, create prescription, generate referral) maps to
+specific methods in the model classes and controller operations. The "include"
+relationships for authentication and the "extend" relationships for specialized
+workflows guided the separation of concerns in the implementation.
+
+APPLICATION OF MVC PATTERN
+
+The MVC pattern has been rigorously applied to structure the codebase, ensuring
+clear separation of concerns and maintainability.
+
+The MODEL layer comprises all classes in the model package (User, Patient,
+Clinician, GP, Specialist, Nurse, Appointment, Prescription, Referral,
+ClinicalRecord). These classes encapsulate data and business logic independent
+of presentation concerns. The ReferralManager singleton, implemented in the
+controller package, manages referral-specific operations while maintaining a
+single instance throughout the application lifecycle.
+
+The VIEW layer includes all GUI components in the view package. The MainFrame
+class provides the primary user interface with tabbed panels for different data
+types. Dialog classes (PatientDialog, AppointmentDialog, PrescriptionDialog,
+ReferralDialog) handle create/edit operations. The view layer contains no
+business logic - it purely focuses on presentation and user interaction,
+delegating all data operations to the controller.
+
+The CONTROLLER layer is represented by DataManager and ReferralManager. The
+DataManager acts as the central coordinator, managing all data collections and
+providing CRUD operations. It uses the CSVHandler utility to persist data,
+demonstrating the controller's role in mediating between model and view. When
+the MainFrame needs to display patients, it requests data from DataManager
+rather than accessing CSV files directly. Similarly, when adding a new
+prescription through PrescriptionDialog, the request flows through DataManager,
+which handles both data persistence and output file generation.
+
+DESIGN PATTERNS AND ARCHITECTURE
+
+The Singleton pattern implementation for ReferralManager ensures centralized
+control over all referral operations, preventing duplicate instances and
+maintaining data consistency. This was crucial given the requirement for audit
+trails and email simulations. The eager initialization approach (creating the
+instance at class loading) guarantees thread safety in this application context.
+
+The three-tier architecture from Part 1 is reflected in the package structure:
+the presentation tier (view package), business logic tier (controller and model
+packages), and data tier (CSV files with CSVHandler utility). This separation
+allows independent modification of each tier.
+
+CONCLUSION
+
+The implementation successfully translates Part 1 designs into a functional
+system. The MVC pattern provides clear code organization, while the Singleton
+pattern ensures robust referral management. The iterative development process,
+evidenced by git commits, demonstrates progressive feature implementation from
+basic models to complete GUI functionality.
+
+================================================================================
+END OF REPORT
+================================================================================
